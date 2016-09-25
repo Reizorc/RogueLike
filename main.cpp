@@ -1,6 +1,6 @@
 #include <cstdlib>
 #include <iostream>
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
 #include <ctime>
 #include "Player.h"
 #include "Meteroite.h"
