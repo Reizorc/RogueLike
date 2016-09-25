@@ -20,15 +20,23 @@ int main()
 {
     int counter;
     int counter2;
+
+    int scoreint=0;
+    scoreint.setString();
+        
     sf::Clock clockMissile;
     sf::Clock clockMeteorite;
 
     srand(time(0));
 
-    sf::RenderWindow window(sf::VideoMode(400, 600), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(400, 800), "SFML works!");
     window.setFramerateLimit(60);
 
     Player player;
+
+    sf::Text Score;
+    Score.text(scoreint);
+
 
     vector<Meteroite>::const_iterator iterMeteorite;
     vector<Meteroite> meteoriteArray;
@@ -90,7 +98,7 @@ int main()
             counter++;
         }
 
-        //Supprimer météorite détruites
+        //Supprimer mï¿½tï¿½orite dï¿½truites
         counter=0;
         for (iterMeteorite = meteoriteArray.begin(); iterMeteorite != meteoriteArray.end(); iterMeteorite++)
         {
@@ -117,7 +125,7 @@ int main()
             counter++;
         }
 
-        //Créer missiles
+        //Crï¿½er missiles
         if(tempsRecharge>=0.25){
             clockMissile.restart();
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
@@ -135,17 +143,17 @@ int main()
                     counter++;
         }
 
-        //Créer météorites
+        //Crï¿½er mï¿½tï¿½orites
         if(tempsEcoule >= 2){
             meteorite1.circ.setPosition(rand()%390-10,-20);
             meteoriteArray.push_back(meteorite1);
             clockMeteorite.restart();
         }
 
-        //Dessiner météorites
+        //Dessiner mï¿½tï¿½orites
         counter =0;
         for(iterMeteorite = meteoriteArray.begin(); iterMeteorite != meteoriteArray.end(); iterMeteorite++){
-                if(counter <= 5){ //pas plus de 5 météorites en même temps
+                if(counter <= 5){ //pas plus de 5 mï¿½tï¿½orites en mï¿½me temps
                     meteoriteArray[counter].updatePosition();
                     window.draw(meteoriteArray[counter].circ);
                     counter++;
