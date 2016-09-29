@@ -7,14 +7,26 @@
 #include "Meteroite.h"
 #include "missile.h"
 #include "Entity.h"
+#include <fstream>
 #include <vector>
 
 using namespace std;
+
+string lvl;
 
 template <class Container>
 typename Container::iterator to_mutable_iterator(Container& c, typename Container::const_iterator it)
 {
     return c.begin() + (it - c.begin());
+}
+
+void ecrireFichier() {
+	ofstream file("res/data.txt", ios::out | ios::trunc);
+	if (file) {
+		cout << "HELLO" << endl;
+		file << lvl;
+		file.close();
+	}
 }
 
 int main()
@@ -26,6 +38,17 @@ int main()
 	{
 	}
 
+	ifstream file("res/data.txt", ios::in);
+	if (file) {
+
+			getline(file,lvl);
+
+			cout << "open" << endl ;
+			cout << "level = " + lvl << endl;
+
+			file.close();
+	}
+
 
     int counter;
     int counter2;
@@ -34,13 +57,17 @@ int main()
         
     sf::Clock clockMissile;
     sf::Clock clockMeteorite;
-
     srand(time(0));
 
     sf::RenderWindow window(sf::VideoMode(400, 800), "SFML works!");
     window.setFramerateLimit(60);
 
     Player player;
+
+	int lvlint = atoi(lvl.c_str());
+	sf::Text level;
+	level.setFont(font);
+	level.setPosition(10,740);
 
     sf::Text Score;
 	Score.setFont(font);
@@ -69,13 +96,11 @@ int main()
         {
             switch(event.type){
             case(sf::Event::Closed):
+				ecrireFichier();
                 window.close();
                 break;
             case(sf::Event::KeyPressed):
                 switch(event.key.code){
-                case(sf::Keyboard::Escape):
-                    window.close();
-                    break;
                 default:
                     break;
                 }
@@ -89,7 +114,10 @@ int main()
 
 		//GestionScore
 		string scorestr = to_string(scoreint);
-		Score.setString(scorestr);
+		Score.setString("Score " + scorestr);
+
+		lvl = to_string(lvlint);
+		level.setString("Level" + lvl);
 
         //COLLISION
         counter =0;
@@ -120,6 +148,7 @@ int main()
                 cout << "Meteorite broken" << endl;
                 iterMeteorite=meteoriteArray.erase(to_mutable_iterator(meteoriteArray,iterMeteorite));
 				scoreint++;
+				lvlint++;
                 break;
             }
 
@@ -173,10 +202,15 @@ int main()
                     counter++;
                 }
         }
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+			ecrireFichier();
+			window.close();
+		}
 
         player.movement(); //Player movement
 
 		window.draw(Score);
+		window.draw(level);
         window.draw(player.rect);
         window.display();
     }
